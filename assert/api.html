@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>辐射树</title>
+    <style>::-webkit-scrollbar{display:none;}html,body{overflow:hidden;margin:0;}</style>
+</head>
+<body>
+<div id="mountNode" style="margin-top: 50px;"></div>
+<script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.1.1/build/g6.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/assets/lib/jquery-3.2.1.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.hierarchy-0.5.0/build/hierarchy.js"></script>
+<script>
+    var data = {
+        "id": "Api自动化",
+        "children": [
+            {
+                "id": "用例管理",
+                "children": [
+                    { "id": "全局参数管理" },
+                    { "id": "自定义层级目录" },
+                    { "id": "自定义域名" },
+                    { "id": "前置脚本处理" },
+                    { "id": "自定义请求头" },
+                    { "id": "多类型参数格式" },
+                    { "id": "参数值自动联想" },
+                    { "id": "后置脚本" },
+                    { "id": "多类型返回值断言" },
+                    { "id": "参数化提取" },
+                    { "id": "用例即时调试" },
+                ]
+            },
+            {
+                "id": "任务管理",
+                "children": [
+                    {
+                        "id": "任务设置",
+                        "children": [
+                            { "id": "即时任务" },
+                            { "id": "每日任务" },
+                            { "id": "全局域名设置" },
+                            { "id": "默认参数设置" },
+                            { "id": "全局代理设置" },
+                            { "id": "全局请求头设置" },
+                            { "id": "执行顺序可调" },
+                        ]
+                    },
+                    {
+                        "id": "任务报告",
+                        "children": [
+                            { "id": "报告聚合展示" },
+                            { "id": "接口性能可见" },
+                        ]
+                    },
+                ]
+            }
+        ]
+    }
+    var graph = new G6.TreeGraph({
+        container: 'mountNode',
+        width: window.innerWidth*0.8,
+        height: window.innerHeight*0.8,
+        pixelRatio: 2,
+        linkCenter: true,
+        modes: {
+            default: [{
+                type: 'collapse-expand',
+                onChange: function onChange(item, collapsed) {
+                    var data = item.get('model').data;
+                    data.collapsed = collapsed;
+                    return true;
+                }
+            }, 'drag-canvas', 'zoom-canvas']
+        },
+        defaultNode: {
+            size: 16,
+            style: {
+                fill: '#7d5fff',
+                stroke: '#7158e2'
+            }
+        },
+        defaultEdge: {
+            style: {
+                stroke: '#A3B1BF'
+            }
+        },
+        layout: function layout(data) {
+            var result = Hierarchy.dendrogram(data, {
+                direction: 'LR', // H / V / LR / RL / TB / BT
+                nodeSep: 20,
+                rankSep: 100
+            });
+            G6.Util.radialLayout(result);
+            return result;
+        }
+    });
+
+    graph.node(function(node) {
+        return {
+            size: 50,
+            style: {
+                fill: '#7d5fff',
+                stroke: '#7158e2'
+            },
+            labelCfg: {
+                style: {
+                    fill: '#fff',
+                    fontSize: 14,
+                    fontWeight: 'bold'
+                }
+            },
+            label: node.id
+        };
+    });
+
+    graph.data(data);
+    graph.render();
+    graph.fitView();
+</script>
+</body>
+</html>

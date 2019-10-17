@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>vft自动化介绍</title>
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/custom.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h2>VFT自动化平台</h2>
+					<p>2019-10-14</p>
+				</section>
+				<section>
+					<h2>分享内容</h2>
+					<ul>
+						<li>框架介绍</li>
+						<li>功能介绍</li>
+					</ul>
+				</section>
+				<section>
+					<section>
+						<h2>框架介绍</h2>
+						<ol>
+							<li>开发框架</li>
+							<li>应用架构</li>
+						</ol>
+					</section>
+					<section>
+						<h2>开发框架</h2>
+						<p>采用B/S架构，低耦合、易扩展、易维护。</p>
+						<ul>
+							<li>前端（React / Chrome Extenstion）</li>
+							<li>后端（Python / Flask）</li>
+							<li>数据库（Mysql）</li>
+						</ul>
+					</section>
+					<section>
+						<h2>应用架构</h2>
+						<ol>
+							<li>Web UI自动化架构</li>
+							<li>Api接口自动化架构</li>
+						</ol>
+					</section>
+					<section>
+						<h2>Web UI自动化架构</h2>
+						<img class="noneBorder" width="712" height="440" data-src="assert/ui.png" alt="ui">
+					</section>
+                    <section data-background-iframe="assert/chromeE.html" data-background-interactive>
+                        <div style="position: absolute; width: 50%; right: 0; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(0, 0, 0, 0.9); color: #fff; padding: 20px; font-size: 20px; text-align: left;">
+                            <h2>Chrome插件设计流程</h2>
+                            <p>1.VFT 发送 OpenTestWebsite 指令到 Background.js</p>
+                            <p>2.Background 发送 startListener 指令到 content.js</p>
+                            <p>3.content开始监听用户的鼠标移动、鼠标点击事件</p>
+                            <p>4.获取鼠标移动到元素节点属性、并高亮元素</p>
+                            <p>5.获取鼠标点击的元素，并计算出其定位路径</p>
+                            <p>6.发送路径数据到浏览器，建立右键菜单列表</p>
+                            <p>7.截屏并根据定位元素的位置用Canvas绘制图片，保存为base64</p>
+                            <p>8.获取点击的菜单项，发送定位值、图片信息给VFT</p>
+                        </div>
+                    </section>
+					<section>
+						<h2>Api接口自动化架构</h2>
+						<img class="noneBorder" width="712" height="440" data-src="assert/api.png" alt="api">
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>功能介绍</h2>
+						<ol>
+							<li>Web UI自动化</li>
+							<li>接口自动化</li>
+						</ol>
+					</section>
+					<section data-background-iframe="assert/web.html" data-background-interactive>
+						<div style="position: absolute; width: 40%; right: -150px;top: -100px; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px; font-size: 20px; text-align: left;">
+							<h2>Web UI自动化</h2>
+							<p>UI自动化相关功能</p>
+						</div>
+					</section>
+					<section data-background-iframe="assert/api.html" data-background-interactive>
+						<div style="position: absolute; width: 40%; right: -150px;top: -100px; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px; font-size: 20px; text-align: left;">
+							<h2>Api自动化</h2>
+							<p>接口自动化相关功能</p>
+						</div>
+					</section>
+					<section data-background="assert/chromeExtension.gif">
+						<h2 style="color: rgba(0,0,0,0.6)">UI用例示例</h2>
+					</section>
+					<section data-background="assert/debug.gif">
+						<h2 style="color: rgba(0,0,0,0.6)">接口用例示例</h2>
+					</section>
+				</section>
+				<section data-transition="zoom" data-background-transition="zoom">
+					<img class="noneBorder" width="1280" height="500" data-src="assert/tobec.jpg" alt="tobec">
+				</section>
+			</div>
+		</div>
+
+		<script src="js/reveal.js"></script>
+
+		<script>
+			Reveal.initialize({
+				controls: true,
+				progress: false,
+				center: true,
+				hash: true,
+
+				transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>

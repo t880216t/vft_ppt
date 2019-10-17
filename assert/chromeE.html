@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>流程图</title>
+    <style>::-webkit-scrollbar{display:none;}html,body{overflow:hidden;margin:0;}</style>
+</head>
+<body>
+<div style="width: 1024px;">
+    <div id="mountNode" style=""></div>
+</div>
+<script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.1.1/build/g6.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/assets/lib/jquery-3.2.1.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/lib/dagre/0.8.4/dist/dagre.min.js"></script>
+<script>
+    var data = {
+        nodes: [{
+            id: 'VFT监听(浏览器消息)'
+        }, {
+            id: '浏览器监听(插件消息)'
+        }, {
+            id: '创建窗口打开页面'
+        }, {
+            id: '监听鼠标移动'
+        }, {
+            id: '监听鼠标按下'
+        }, {
+            id: '获取Dom节点、高亮元素'
+        }, {
+            id: '计算相对路径'
+        }, {
+            id: '创建菜单列表'
+        }, {
+            id: '创建Canvas截图'
+        }, {
+            id: '封装路径值'
+        }],
+        edges: [{
+            source: 'VFT监听(浏览器消息)',
+            target: '浏览器监听(插件消息)'
+        },{
+            source: '浏览器监听(插件消息)',
+            target: '创建窗口打开页面'
+        },{
+            source: '创建窗口打开页面',
+            target: '监听鼠标移动'
+        },{
+            source: '创建窗口打开页面',
+            target: '监听鼠标按下'
+        },{
+            source: '监听鼠标移动',
+            target: '获取Dom节点、高亮元素'
+        },{
+            source: '监听鼠标按下',
+            target: '计算相对路径'
+        },{
+            source: '获取Dom节点、高亮元素',
+            target: '计算相对路径'
+        },{
+            source: '计算相对路径',
+            target: '创建菜单列表'
+        },{
+            source: '计算相对路径',
+            target: '创建Canvas截图'
+        },{
+            source: '创建菜单列表',
+            target: '封装路径值'
+        },{
+            source: '创建Canvas截图',
+            target: '封装路径值'
+        },{
+            source: '封装路径值',
+            target: 'VFT监听(浏览器消息)'
+        }]
+    };
+    var g = new dagre.graphlib.Graph();
+    g.setDefaultEdgeLabel(function() {
+        return {};
+    });
+    g.setGraph({
+        rankdir: 'TB'
+    });
+    data.nodes.forEach(function(node) {
+        node.label = node.id;
+        g.setNode(node.id, {
+            width: 150,
+            height: 50
+        });
+    });
+    data.edges.forEach(function(edge) {
+        g.setEdge(edge.source, edge.target);
+    });
+    dagre.layout(g);
+    var coord = void 0;
+    g.nodes().forEach(function(node, i) {
+        coord = g.node(node);
+        data.nodes[i].x = coord.x;
+        data.nodes[i].y = coord.y;
+    });
+    g.edges().forEach(function(edge, i) {
+        coord = g.edge(edge);
+        data.edges[i].startPoint = coord.points[0];
+        data.edges[i].endPoint = coord.points[coord.points.length - 1];
+        data.edges[i].controlPoints = coord.points.slice(1, coord.points.length - 1);
+    });
+    G6.registerNode('operation', {
+        drawShape: function drawShape(cfg, group) {
+            var rect = group.addShape('rect', {
+                attrs: {
+                    x: -75,
+                    y: -25,
+                    width: 150,
+                    height: 50,
+                    radius: 10,
+                    stroke: '#dfe6e9',
+                    fill: '#fdcb6e',
+                    fillOpacity: 0.45,
+                    lineWidth: 2
+                }
+            });
+            return rect;
+        }
+    }, 'single-shape');
+
+    var graph = new G6.Graph({
+        container: 'mountNode',
+        width: 1280,
+        height: window.innerHeight,
+        pixelRatio: 2,
+        modes: {
+            default: ['drag-canvas', 'zoom-canvas']
+        },
+        defaultNode: {
+            shape: 'operation',
+            labelCfg: {
+                style: {
+                    fill: '#fff',
+                    fontSize: 14,
+                    fontWeight: 'bold'
+                }
+            }
+        },
+        defaultEdge: {
+            shape: 'polyline',
+            style: {
+                endArrow: true,
+                lineWidth: 2,
+                stroke: '#ccc'
+            }
+        }
+    });
+    graph.data(data);
+    graph.render();
+    graph.fitView();
+</script>
+</body>
+</html>

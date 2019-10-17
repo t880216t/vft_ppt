@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>辐射树</title>
+    <style>::-webkit-scrollbar{display:none;}html,body{overflow:hidden;margin:0;}</style>
+</head>
+<body>
+<div id="mountNode" style="margin-top: 50px;"></div>
+<script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.1.1/build/g6.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/assets/lib/jquery-3.2.1.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.hierarchy-0.5.0/build/hierarchy.js"></script>
+<script>
+    var data = {
+        "id": "Web UI自动化",
+        "children": [
+            {
+                "id": "数据统计",
+                "children": [
+                    { "id": "用例统计" },
+                    { "id": "项目总数" },
+                    { "id": "任务统计" },
+                    { "id": "每日执行结果" },
+                    { "id": "用例通过率" },
+                    { "id": "失败用例统计" },
+                    { "id": "用例新增数据" },
+                ]
+            },
+            {
+                "id": "用例管理",
+                "children": [
+                    {
+                        "id": "项目用例集管理",
+                        "children": [
+                            { "id": "全局参数管理" },
+                            { "id": "用例信息展示" },
+                            { "id": "用例调试" },
+                            { "id": "关键词自动补全" },
+                            { "id": "关键词解释" },
+                            { "id": "元素快捷获取" },
+                            { "id": "元素可视化" },
+                            { "id": "全局参数联想" },
+                            { "id": "支持文件参数" },
+                            { "id": "版本管理" },
+                        ]
+                    },
+                    {
+                        "id": "项目关键词管理",
+                        "children": [
+                            { "id": "自定义关键词" },
+                            { "id": "支持入参、出参" },
+                            { "id": "支持入参联想" },
+                            { "id": "元素快捷获取" },
+                            { "id": "元素可视化" },
+                            { "id": "全局参数联想" },
+                        ]
+                    },
+                ]
+            },
+            {
+                "id": "任务管理",
+                "children": [
+                    {
+                        "id": "任务设置",
+                        "children": [
+                            { "id": "即时任务" },
+                            { "id": "可指定host环境" },
+                            { "id": "执行顺序可变" },
+                            { "id": "支持多套参数值" },
+                            { "id": "支持多浏览器" },
+                            { "id": "支持自定义代理" },
+                        ]
+                    },
+                    {
+                        "id": "任务报告",
+                        "children": [
+                            { "id": "报告聚合展示" },
+                            { "id": "历时报告查看" },
+                        ]
+                    },
+                ]
+            }
+        ]
+    }
+    var graph = new G6.TreeGraph({
+        container: 'mountNode',
+        width: window.innerWidth*0.8,
+        height: window.innerHeight*0.8,
+        pixelRatio: 2,
+        linkCenter: true,
+        modes: {
+            default: [{
+                type: 'collapse-expand',
+                onChange: function onChange(item, collapsed) {
+                    var data = item.get('model').data;
+                    data.collapsed = collapsed;
+                    return true;
+                }
+            }, 'drag-canvas', 'zoom-canvas']
+        },
+        defaultNode: {
+            size: 16,
+            style: {
+                fill: '#40a9ff',
+                stroke: '#096dd9'
+            }
+        },
+        defaultEdge: {
+            style: {
+                stroke: '#A3B1BF'
+            }
+        },
+        layout: function layout(data) {
+            var result = Hierarchy.dendrogram(data, {
+                direction: 'LR', // H / V / LR / RL / TB / BT
+                nodeSep: 20,
+                rankSep: 100
+            });
+            G6.Util.radialLayout(result);
+            return result;
+        }
+    });
+
+    graph.node(function(node) {
+        return {
+            size: 50,
+            style: {
+                fill: '#40a9ff',
+                stroke: '#096dd9'
+            },
+            labelCfg: {
+                style: {
+                    fill: '#fff',
+                    fontSize: 14,
+                    fontWeight: 'bold'
+                }
+            },
+            label: node.id
+        };
+    });
+
+    graph.data(data);
+    graph.render();
+    graph.fitView();
+</script>
+</body>
+</html>
